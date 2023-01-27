@@ -1,0 +1,9 @@
+   types for strongly typing your FormControls, FormGroups and FormArrays based on a Model type
+    functions for instantiating the TypedFormControl, TypedFormGroup and TypedFormArray based on a Model type
+    a helper function that enumerates all controls in a form (group)
+        calls methods on each of them
+        attaches their validators to a parent form (group)
+        attaches the touched/untouched behavior to a parent form (group)
+
+https://github.com/gparlakov/forms-typed
+9.0.2

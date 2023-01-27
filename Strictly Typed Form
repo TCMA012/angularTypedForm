@@ -1,0 +1,18 @@
+Strictly Typed Forms
+https://blog.ninja-squad.com/2022/04/21/strictly-typed-forms-angular/
+
+Note that the inferred type is string | null and not string. This is because calling .reset() on a control without specifying a reset value, resets the value to null. This behavior is here since the beginning of Angular, so the inferred type reflects it. We’ll come back to this possibly null value, in a dedicated section, as it can be annoying (but can be worked around).
+
+
+
+directly inject NonNullableFormBuilder instead of FormBuilder:
+
+registerForm = this.fb.group({
+  login: ['', Validators.required]
+});
+
+constructor(private fb: NonNullableFormBuilder) {}
+
+
+
+A FormRecord is similar to a FormGroup but the controls must all be of the same type.

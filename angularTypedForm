@@ -1,0 +1,4 @@
+angularTypedForm
+cd /media/tcma/SeagateBackupPlusDrive
+
+mkdir angularTypedForm && cd "$_"

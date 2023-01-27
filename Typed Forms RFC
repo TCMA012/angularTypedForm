@@ -1,0 +1,68 @@
+Strictly Typed Reactive Forms RFC
+https://github.com/angular/angular/discussions/44513
+
+git clone https://github.com/dylhunn/typed-forms-example-app.git && cd typed-forms-example-app
+
+
+
+
+cd /media/tcma/SeagateBackupPlusDrive
+
+mkdir angularTypedForm/typed-forms-example-app && cd "$_"
+
+
+ 
+curl -OL https://github.com/dylhunn/typed-forms-example-app/archive/main.zip
+
+unzip *.zip -d typed-forms-example-app
+
+
+
+
+npm i --force -g yarn && yarn. As illustrated, you may need to force install them due to the experimental package versions.
+Run the app: ng serve --open
+Try out the new types by editing src/app/profile/profile.component.ts
+
+
+
+A FormGroup infers a type based on its inner controls. Recall our cat type from above:
+
+const cat = new FormGroup<{
+    name: FormControl<string>,
+    lives: FormControl<number>,
+}>(...);
+
+In other words, a FormGroup's generic type is an interface that describes the types of each of its inner controls.
+However, we want to 
+strongly type not just FormGroup.value, but 
+FormGroup.controls. 
+That is, the type of cat.controls.name should be the actual type of the name control, and not a plain AbstractControl type. This is only possible if the type of cat is built on the control types that it contains, not the value types of those controls.
+
+
+
+Disabled Controls
+The value property of a FormGroup is an object that contains the values of each constituent control, with one important difference: the value key for every control is optional.
+any given key on the value object may not be present (and thus undefined if read). This happens because of the way disabled controls work in a FormGroup. 
+When a control in a group is disabled, its value is not included in the value object:
+// Disabling the `lives` key removes it from the group's value!
+cat.controls.lives.disable();
+
+console.log(cat.value.lives); // prints 'undefined'
+
+If you want a value object for the group that includes the values for disabled controls, use the 
+.rawValue() method instead.
+
+
+
+angular FormRecord
+introduce a new class, 
+FormRecord, in which keys can be dynamically added and removed. 
+The type guarantees for FormRecord would be much weaker than with immutable FormGroup.
+
+
+
+InferControls type, which was basically a simpler version of 
+ControlsOf that @NetanelBasal mentions.
+We will almost certainly add a 
+GuessControlType
+ or similar based on this feedback. I'm yak-shaving a bit about the name because we cannot actually guarantee that the result is correct, due to object-valued custom controls.

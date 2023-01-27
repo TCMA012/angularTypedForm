@@ -1,0 +1,14 @@
+Angular Custom Form Controls & Nested Form Groups Made Easy
+Kagklis Vasileios
+https://javascript.plainenglish.io/angular-custom-form-controls-nested-form-groups-made-easy-2ac09e91cf67
+https://github.com/kagklis/custom-form-controls-demo
+ControlValueAccessor (CVA)
+inject NgControl
+the @Self() decorator limit the scope to just the element we are currently on. 
+Composite CVA
+
+
+
+Kara Erickson presentation in AngularConnect 2017
+old
+https://github.com/kara

@@ -1,0 +1,33 @@
+InDepth Guide for Creating Nested and Reusable Forms
+https://dev.to/shhdharmen/indepth-guide-for-creating-nested-and-reusable-forms-5fg
+https://github.com/shhdharmen/nested-reusable-form
+“Composite ControlValueAccessor” Kara Erickson in AngularConnect 2017.
+A ControlValueAccessor acts as a bridge between the Angular forms API and a native element in the DOM. Any component or directive can be turned into form-control by implementing the ControlValueAccessor interface and registering itself as an NG_VALUE_ACCESSOR provider.
+Among others the interface defines two important methods — 
+writeValue
+ and 
+registerOnChange
+
+
+
+Multiple instances
+an host property called id
+a static counter, which we will increment with each instance of this component
+use this id with all inputs’ id and name attributes. And also in their &lt;label>s’ for attribute
+
+
+
+https://indepth.dev/posts/1055/never-again-be-confused-when-implementing-controlvalueaccessor-in-angular-forms
+
+
+
+date
+form-control’s ISO string value to / from `YYYY-MM-DD` format
+https://indepth.dev/posts/1467/how-to-use-controlvalueaccessor-to-enhance-date-input-with-automatic-conversion-and-validation
+https://github.com/shhdharmen/angular-date-input-directive
+
+
+
+Telephone
+https://indepth.dev/tutorials/angular/object-in-formcontrol
+https://github.com/shhdharmen/multi-value-form-control

@@ -1,0 +1,9 @@
+https://blog.ninja-squad.com/2022/08/26/what-is-new-angular-14.2/
+But there was no method to create a FormRecord with the FormBuilder. This is now fixed in Angular v14.2 (a small contribution from me), and you can use fb.record({}):
+
+this.form = this.fb.group({
+  languages: this.fb.record({
+    english: true,
+    french: false
+  })
+});

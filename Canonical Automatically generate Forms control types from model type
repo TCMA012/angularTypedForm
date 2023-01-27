@@ -1,0 +1,7 @@
+Canonical: Automatically generate Forms control types from model type
+https://github.com/angular/angular/discussions/46864
+
+angular ControlsOf GuessControlType 
+angular "ControlsOf" "GuessControlType"
+
+https://github.com/iamguid/ngx-mf

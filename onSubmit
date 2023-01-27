@@ -1,0 +1,11 @@
+Define an onSubmit () method to process the form.
+
+  onSubmit(): void {
+    // Process checkout data here
+    this.items = this.cartService.clearCart();
+    console.warn('Your order has been submitted', this.checkoutForm.value);
+    this.checkoutForm.reset();
+  }
+
+<form [formGroup]="checkoutForm" (ngSubmit)="onSubmit()">
+</form>

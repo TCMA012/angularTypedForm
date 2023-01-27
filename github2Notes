@@ -1,0 +1,35 @@
+cd /media/tcma/SeagateBackupPlusDrive
+cd angularTypedForm
+cd forms/repo
+
+
+Angular typed Reactive Form nested
+
+Angular typed Reactive Form ControlValueAccessor
+
+
+
+https://blog.angular-university.io/angular-custom-form-controls/
+https://github.com/sgarg5858/forms-in-angular
+
+
+
+ 
+
+
+add a formReady event that provides the created form group to the parent component.
+https://github.com/rothsandro/angular-large-typed-reactive-forms-example
+https://sandroroth.com/blog/angular-large-typed-reactive-forms
+https://angular-large-typed-reactive-forms.blog.sandroroth.com/
+
+
+
+
+profile, blog, and book Initial Setup
+https://github.com/msantos9-dev/Angular-Creating-Forms
+
+
+
+
+
+

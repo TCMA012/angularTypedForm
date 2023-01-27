@@ -1,0 +1,10 @@
+Typed Forms
+https://angular.io/guide/typed-forms
+
+Angular provides the 
+FormGroup type for forms with an enumerated set of keys
+
+
+
+FormRecord type for open-ended or dynamic groups.
+the keys are not known ahead of time. 

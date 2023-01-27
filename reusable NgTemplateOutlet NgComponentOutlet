@@ -1,0 +1,15 @@
+How to Create Reusable & Configurable Angular Components
+Create reusable Angular components with the NgTemplateOutlet and NgComponentOutlet directives
+reusable selection list component using the NgTemplateOutlet directive
+content-projection
+https://github.com/kagklis/ng-template-outlet-demo
+https://javascript.plainenglish.io/creating-reusable-configurable-angular-components-b7fcba2f5f38
+
+
+ng-container
+ngTemplateOutlet
+ngTemplateOutletContext
+cdk-virtual-scroll-viewport
+cdkVirtualFor
+
+https://material.angular.io/cdk/scrolling/overview
