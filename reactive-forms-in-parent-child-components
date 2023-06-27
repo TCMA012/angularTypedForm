@@ -1,0 +1,6 @@
+https://blog.profanis.me/blog/reactive-forms-in-parent-child-components
+dynamically provide the name of the nested formGroup in each child component.
+how to get the name of the nested formGroup in each child component?
+use an @input decorator!
+
+https://stackblitz.com/edit/user-registration-with-fgd?file=src/app/user-registration/user-registration/user-registration.component.html

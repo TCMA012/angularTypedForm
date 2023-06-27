@@ -1,0 +1,3 @@
+https://dev.to/ayyash/inserting-peach-component-into-rose-on-runtime-f9a
+https://stackblitz.com/edit/angular-program-component?file=src%2Flib%2FRoseDialog%2Frose.service.ts
+The Angular Material Dialog component is-among other things-a component inserted into the body, then another generic component inserted into it.

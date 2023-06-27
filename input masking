@@ -1,0 +1,18 @@
+input masking
+
+Maskito — a library for input masking, which works with Angular as well as vanilla JavaScript and other frameworks.
+https://github.com/Tinkoff/maskito
+
+There's also an extensive demo portal which you can explore with examples and core concepts:
+https://tinkoff.github.io/maskito
+
+From the lead dev a more technical one:
+https://medium.com/its-tinkoff/maskito-is-a-new-collection-of-libraries-for-text-field-masking-f64ec71951df
+
+an article detailing why this library might be the tool you should choose, indicating advantages which you can share with your teamlead/manager if you like this library and want to use it:
+https://medium.com/angularwave/maskito-a-holy-grail-of-input-masking-25e729a71ef2?sk=58d97ac159ddd244b05c18053b69d7be
+
+=
+
+https://github.com/JsDaddy/ngx-mask
+https://jsdaddy.github.io/ngx-mask/

@@ -1,4 +1,8 @@
 https://netbasal.com/typed-reactive-forms-in-angular-no-longer-a-type-dream-bf6982b0af28
+https://github.com/ngneat/reactive-forms
+https://github.com/ngneat/reactive-forms/discussions
+ngneat "reactive-forms"
+
 
 We can define a type that maps a model to a strict form group. To demonstrate, here is a minimal version of my reactive forms library:
 
