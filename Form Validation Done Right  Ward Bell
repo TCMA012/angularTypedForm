@@ -1,0 +1,660 @@
+Form Validation Done Right | Ward Bell | ng-cof 2022
+ng-conf 2022
+
+https://github.com/wardbell/ngc-validate
+
+Almost everything you've been told about form validation is a bad practice. Why? Because it tells you to validate the form instead of the model. That's backward. Let me ask you an unsettling question: 
+"is the field required because the form says so or because it's a business model requirement? 
+Would the model be invalid even if we never displayed that field?" 
+Of course we have to express the required rule in the UI. We must tell the user the value is missing and (perhaps) force the user to enter it. But the value is still required whether the field appears on the form or not. And that is just the start of our troubles. We'd like to tell the user if the whole model is valid. We'd want to block certain operations if the model is invalid anywhere. We'd love to display a list of all invalid fields with links the user can click to navigate to the page where they can fix the problem. We'd prefer to find, document, and maintain all of the validation rules in one place and write unit tests for them. We'd like to apply the same rules on both server and client without writing them twice. None of that is possible with validations embedded in forms. This talk is a follow-up to my impassioned argument for Template Driven forms at last year's ngConf (   • Prefer Template-D...  ). Many folks (incorrectly) try to argue that validation is a weakness of Template Driven forms. I will show that Angular validation, as taught, is a weakness of Reactive forms as well. What we need is a model-driven validation library that integrates with both modalities, one that is powerful and easy to use in the scenarios you wish you could handle today. Of course I'll show you an open-source validation library that we wrote and have used at our biggest Angular client for the last 3 years.
+
+Transcript
+hey there I'm Joe Weems before we get
+into the video I want to remind you
+about NG conf 2023 happening in Salt
+Lake City Utah on June 14th and 15th
+head over to ngconf.org to check out the
+speakers check out the talks and to get
+your ticket before they all sell out
+we'll see you there
+
+foreign
+ so I'm here to talk about form
+validation done right that's a polite
+title it's really you're doing it wrong
+and I'm here to save you   
+so so I did this kind of talk last year
+for NG comp and  it was all about how
+reactive forms no template driven yes
+and one year later it's still true
+everything I told you is true everything
+you know you've been told about reactive
+forms is not true you know that already
+um but let me sort of summarize the talk
+a little bit you may remember that this
+is what you do in reactive forms and I
+hear that there are a lot of people here
+who are really excited about type safety
+in here is there anybody here who thinks
+that's great
+of course you do you want to know how I
+feel
+like why  because I don't need
+the type safety there's nothing to write
+there's no type safety needed why are we
+working so hard put this in your brain
+why are we working so hard to do
+something that we shouldn't be doing so
+I claim
+well I'm carrying on that idea here the
+theme then was really right let's do
+more the theme today is right let's do
+more I hope you'll say it with me at
+some point
+but let's talk about validation and I
+just put together a little screen here
+it's got 
+three rows 
+two controls the top
+two rows in the second one in the shorty
+and the third and how would you like to
+write the template for that what would
+you like that to look like at the end of
+the talk it will look like this it's got
+ you can see it 
+three rows two
+controls in the first two controls in
+the second one control in the end you
+can figure it out there's 
+no sign of
+validation there's 
+no sign of binding
+there's 
+no sign of FormControl it's got
+only what you need to write the form
+that's where we should go
+no code in the class
+ so validating user input I
+think we know what that means you know
+you type in something and if it says
+it's required you better put it in or
+it'll tell you there's a problem
+ you know if you only do that once not
+a big deal but if you write big forms
+over applications like I've been doing
+forever and you can't rely on the out of
+the box for a custom validation you've
+got to write your custom validations you
+got to rely on them and if you don't get
+it right
+somebody doesn't get paid  so
+it's no fooling
+so let's all together 
+write a form
+validation validator  the way we've
+been taught so we start with a 
+validator
+function 
+I don't remember what the
+syntax of that is because of course it's
+a function that returns a function that
+returns  errors and so I 
+look it up
+and then I go fill it in and if I'm
+reactive I'm saying well at least I'm
+done but if I'm 
+template driven I've got
+to go write a 
+validation directive and I
+don't remember how to do that but
+there's a sea of 
+yellow telling me all
+the routine things I have to do and then
+I have to go find the thing my template
+and I put that attribute on there and
+I've done one validation rule
+and if I want any more I do the same
+thing
+now this to me strikes as a lot of pain
+if I've got 
+over 100 custom validations
+what am I doing what am I doing writing
+one valid area per validation rule
+writing one validation directive per
+validation rule writing one attribute
+onto decorating this thing crazy with us
+and we haven't even gotten into how hard
+it can be to write a 
+complex validation
+well there's a first principle of
+engineering and it says when you have an
+unnecessary requirement get rid of it
+and I'm here to tell you it's not needed
+you 
+may never write a validator again
+
+ that's what I want to hear  but
+there's a deeper problem and that is
+that we're our architecture is wrong
+we're trying to do 
+validation in the UI
+and that's not where it belongs     we know how to do
+this and you know I just showed it to
+you but you've got an 
+Add company button
+and you press that button
+and it takes you someplace and what if
+the name of the company is not on the
+form where you happen to go
+you know is the whether that's valid or
+not is that valid therefore how do you
+know that the whole thing is not valid
+because there's 
+no legal name there if
+you don't visit the form
+
+you don't know about it a tree fell in
+the forest and you don't know
+let's take it up a notch  right so I
+I let me back up and say is that form
+battle 
+
+is that model valid?
+ no is the
+form valid it says it is because it's
+you didn't go there so it's not really
+valid
+so let's go up a little bit let's
+suppose  my company is moving from
+California to Utah  you know for tax
+reasons or because it's too costly or I
+don't know why people are doing that but
+they are  and when I do that though
+this is a payroll application and when I
+do that the taxes on every employee
+change
+
+there's nothing on this forum about
+taxes so what we've actually done is
+invalidated the model but we've done it
+on two forms that we haven't even gotten
+to we don't even know that they are
+there  is this form invalid no
+it's not  you can't invalidate
+something if you don't put something on
+there to validate can you block the user
+from leaving no that makes no sense
+they've got to be able to change the
+address there's you you can't stop them
+from doing that they couldn't fix it if
+they wanted to you can't warn them
+because
+validators don't have a warning feature
+they have an errors feature
+they don't know what to do to fix it
+they don't know where to go
+and even if you told them they might not
+go there
+and if they don't go to The Form you
+don't know that it's invalid the model
+is invalid
+so let's just pretend that this is not a
+problem
+you may be able to do that but I can't
+do that  
+in fact what I do is want
+to create a great validation experience
+so when the people navigate higher to
+the sort of this navigation screen this
+dashboard I want to be able to give them
+visual clues about what's good and
+what's not so that they can 
+drill into
+places that where they can complete the
+deal oh and I might want to have a
+review page where I can summarize all
+the things that are right or wrong about
+the model and they can click on
+something and it'll take them there and
+when it takes them there why don't I
+give them a panel on the right hand side
+so as they March through the things they
+have to fix the application takes them
+from one place to the next isn't that
+what they want well I don't know about
+you but that's what I do in my
+application this is real
+
+so can you do that with UI validators
+no
+ we got to do something about
+that and it's something we're going to
+do about that is called 
+
+Model validation
+
+by model I'm talking about like the
+whole domain that your user application
+is interacting with which in our example
+which is a payroll application is
+everything that the company is trying to
+set up about paying all of their
+employees and you cannot do that on one
+form  it's distributed over a whole
+bunch of forms in a whole bunch of
+places so so all the logic all the you
+know all the logic about the model which
+is this whole thing that the user is
+interacting with we have to worry about
+and so in this architecture it's 
+
+the model sets the rules not the UI
+
+it's the model that knows the 
+employee
+name is required 
+not the UI 
+it's the
+model that knows that when you change
+the work state the taxes change 
+it's the
+model that knows that if you change the
+type of the employee to a 1099
+contractor you don't have to pay taxes
+you don't have to cover their taxes at
+
+and moreover once we have this and we
+let's suppose we composed all of these
+rules at the 
+
+model level 
+we want to be
+able to cover the gamut of things that
+our application should do in terms of
+validation so sure we want to expose it
+at the 
+
+field level 
+
+and sure we want to
+expose it at the 
+
+form level 
+
+but we also
+as we saw want to expose it at the
+
+Domain level 
+
+in a myriad of ways
+ and we want 
+
+one set of rules
+
+to do that and we don't want to run away
+to some validator functions to talk
+about it so let's talk about what 
+
+model validation 
+
+might look like in angular
+and I assure you you see a lot of times
+you come in here with a solution and now
+you've got to say  I'm going to be
+sweating bullets there's a whole bunch
+of stuff I have to do but what if I told
+you that the solution I'm going to offer
+you is actually easier than if you do it
+the way you've been taught as a matter
+of fact the first time you write a
+custom validator is the first time you
+should switch over to this approach
+because it will be easier for you
+ so there are 
+
+three elements to
+this model validation solution the first
+is we need we got the with them we put
+the validators aside we need some way of
+expressing validation rules
+that's really comfortable for us and we
+need that something to be able to
+execute deliver the judgment about
+whether something is valid or not
+and this is angular and so let's
+integrate whatever we choose for a
+validation engine right into angular so
+that we do get the benefit of what
+angular does offer Us in terms of of
+exposing errors
+and then we want to look at it and say
+ but man there's a lot of junk
+here let's see how much of it we can get
+rid of and I call that solution
+application widgets so we're going to do
+those 
+three things
+
+the first thing is the
+ 
+1. Model validation engine
+
+now we wrote Our Own and I before this
+talk I was worried I was going to have
+to show it to you because it's awful
+I'd hate to say it but it's you know it
+works and we know it but I was saying 
+ how are we going to explain this and
+then
+I went to Webrush the podcast
+webrush.io
+
+
+ you
+should go through every Thursday and in
+that we had a guest who had this
+
+solution for this problem and he had
+done it for reactant View and
+one of those other ones escaping me
+and  but he didn't know angular and he
+had no idea how he was going to tie in
+angular
+
+
+Vest Declarative validations framework 
+vestjs.dev
+
+
+2. Angular Integration
+
+ and I said I know how and I've
+got this talk coming up and his name is
+and he wrote this library and I've been
+using it as my 
+validation engine and my
+validation rules for months now and I am
+ready to say  go do this don't write
+it yourself he's maintaining it it's
+beautifully documented he cares great
+guy use it you'll see
+so I have to
+compose a validation rule right 
+custom
+validation Rule 
+and I don't know what
+this looks like to you but let's see if
+we can figure it out together 
+so there's that word test there man that
+looks a lot like an it
+and it's true that's probably the
+property oh here's that message that you
+know I usually say in it is about this
+thing   that's good in force boy
+there's a word that I use somewhere
+that's kind of like expect
+and then there's the value and then oh
+man there's a whole kit full of
+expectations a library of them all can
+for me maybe it's even extensible
+that looks a lot like tell me what it
+looks like people
+thank you unit test right yes and we
+know how to do unit tests so I don't
+really have to explain to you what that
+looks like and what do you do with unit
+test do you write one of them no you
+don't you create a suite of them it's
+the suite validations and of course when
+it comes time to write another
+validation rule do you go back to your
+validators and write a validator
+function
+ of course you do because you love
+to code but I don't so  I write more
+unit tests
+
+and I create sweets of these
+and they're all together and so when I
+want to know how my application
+validates I know where to look I don't
+have to run around to 200 components and
+wonder what validator are you on  it's here I can write unit tests
+on my unit test by the way
+ so I have a great way
+expressing it I got to be able to
+execute it 
+wherever and 
+whenever I need
+it in my application
+and that's  not that hard right we had
+that it's a function that wraps these
+things and I throw some stuff into it
+I'm not going into what the stuff is
+and I say go do it and then I say give
+me the errors and then I do whatever I
+want to do with those errors
+
+but there's an 
+async version but you
+don't care
+so here's another thought I go
+to all this work of writing all these
+validation rules
+but like you know I do this all on
+the server I'm sorry on the client but
+when you do validation on the client
+that's for user experience that's not
+the real guardian of your data the
+guardian of your data is on the server
+that's where you do data integrity
+and why oh why would I write one set of
+rules on the server and another set of
+rules on the client I don't have to I
+can do 
+
+validation as a service with a
+server
+
+think about it
+so this is 
+
+step two
+we got our angular we got this apparatus
+we want to plug in
+we want to 
+tap in to the FormControl
+validator system
+
+1. Create validator functions that call vest
+2. Add these validators to FormControls _on the fly_
+
+and then I'm going to have a way to run
+around to all the controls and put that
+validator everywhere that you have a
+FormControl how hard can it be
+well it ain't that hard
+ I'm going to show you a
+validator function this is the super
+function right
+I don't remember the structure so I have
+to go look it up again and  that's
+kind of it  I get the control
+value that just changed and I had this
+model that I was binding to yes I am
+talking to you about template driven
+forms
+and then I smush them together and then
+I call we just learned how to call the
+validation suite and I call the
+validation suite and one of the things I
+give it is the field the property and so
+it knows inside this validator that I'm
+not valuating the entire model I'm
+validating this property the one that
+your control is bound to
+and so it doesn't execute everything it
+just executes that part of your Suite
+nice
+and then I expose it
+ now there was that other stuff
+I had to get in there so it's a 
+factory
+
+thing but you know and I do all this
+stuff that I where I can get all this
+other stuff and that's not important
+today just know it works and I make an
+async validator that's just like it
+and he's the 
+only two validators 
+
+you
+will ever have in your application how
+do I know that because they're the only
+two validators in my client's
+application
+and I wrote them
+you don't write them although I'm going
+to give you the code
+and so as I said you may never write a
+validator again
+
+<input name="legalName" [(ngModel)]="vm.legalName">
+
+1. The [(ngModel)] is the NgModel directive
+
+2. The NgModel directive creates its own FormControl
+
+3. The vest directive
+a. selects the NgModel with selector: '[ngModel]'
+b. grabs NgModel's FormControl
+c. adds the vest sync and async validators to that control
+
+You neither see nor write this directive!
+
+so now we have this this problem though
+we've got to kind of connect the dots I
+got you know I got the validator
+function but I got to get it into the
+control somehow how am I going to do
+that particularly if you're a template
+driven forms fan like I am and oh it
+turns out it's kind of sweet you see
+there's that 
+ngModel up there well
+behind the scenes that's an 
+ngModel
+directive and what does an 
+ngModel
+director do I know you've all wondered
+this  it creates a FormControl of its
+own that connects to that HTML element
+and if it's going to do that well then I
+can write my own directive right and
+that directive can go find that ngModel
+directive because it uses the selector
+that says I'm going to go look for
+the 
+ngModel attribute and when it does
+it it grabs it and it pulls out the form
+control and it goes in there and stuffs
+those two validators into it and viola
+you have it hooked up
+and do you ever see this thing no
+because this way the selector works it's
+going to find it for itself and I am not
+going to have to put that attribute on
+anything
+so we're back to the theme I'm writing
+less when the you I mean we the
+application developers are writing less
+and we're getting a lot 
+more from
+writing less
+
+ so there's still some of this crud
+lying around because I you may vaguely
+recall that I had to pass some
+information I got to know what the model
+is where that has the data I kind of got
+to know which validation Suite because I
+wrote a lot of them which one applies
+here so  and I want to keep saying
+that over and over again because I hate
+saying things over and over again so I
+have a validation scope directive and so
+here's where I say this is the model
+object when you look for that first name
+or legal name you'll find it on that and
+here this is the name of the suite I
+want you to run
+ and I can create much mobile
+multiples of these Suites of validation
+functions I don't have to have one Uber
+one but I just have to name it and I go
+find it and when I do that now I can
+drop in there and the only thing I have
+to say is the 
+property 
+I'm binding to
+which I have to say anyway because I
+have to relate the input control to a
+data property I'm going to say that
+anyway but I don't have to say all this
+other stuff
+and let's suppose I'm a good programmer
+and I take this gigantic form and I
+carve it up into you know component
+forms that same scope is going to
+penetrate all the way down
+so I'll never you know ideally I might
+never have to mention this again but
+believe me it's called a scope because
+you can have multiple Scopes so if you
+need it you can but basically you get
+the idea say as little as necessary
+and that's cool but I still have all
+this boilerplate left
+and I hate that I hate boilerplate
+so  you know I mean that's boilerplate
+the errors that's boilerplate that's the
+glass this is boilerplate It's specific
+because to my angular material stuff but
+it's over and over again so  repeat
+after me please write less
+do more  that's our Mantra and
+so I want to take all this stuff and I
+want to boil it down to that
+that's all I want to have to write maybe
+I have to write a little bit more
+occasionally but that's what I want to
+write and it's all because 
+
+3. Application widgets
+
+Eliminate boilerplate
+
+I wrote
+widgets which are components this one's
+called input text you know in your
+application you probably have five sort
+of modality patterns of taking input you
+use over and over again you put
+the investment into five widgets
+and you'll be writing code like this
+and that means when you're back to that
+work address again with the three rows
+and it'll look like this without the
+widgets and it's an eye chart and you
+don't want to see it you're back to this
+the minimum you have to say
+and there's no code
+get the goods get the goods here that
+will be available to you everything is
+in there including the validator
+directors and stuff like that that you
+could absolutely use everywhere anywhere
+the rest are sort of teaching examples
+and you'll end up right here writing
+less and doing more

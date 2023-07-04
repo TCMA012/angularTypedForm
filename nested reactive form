@@ -1,0 +1,73 @@
+https://www.reddit.com/r/Angular2/comments/11qcofh/what_is_the_best_way_to_create_nested_reactive/
+https://www.dotnetsurfers.com/blog/2020/10/11/3-approaches-for-implementing-nested-forms-in-angular/
+https://github.com/latish/AngularNestedForms
+https://github.com/latish/AngularNestedForms/tree/controlvalueaccessor
+https://github.com/latish/AngularNestedForms/tree/controlcontainer
+https://indepth.dev/never-again-be-confused-when-implementing-controlvalueaccessor-in-angular-forms/
+
+https://tomastrajan.medium.com/angular-reactive-sub-forms-type-safe-without-duplication-dbd24225e1e8
+https://stackoverflow.com/questions/66933164/recursive-typescript-types-and-reactive-form
+export type FormGroupConfig<T> = {
+    [P in keyof T]: [
+            T[P] | { value: T[P]; disabled: boolean },
+        (AbstractControlOptions | ValidatorFn | ValidatorFn[])?,
+    ]
+}
+
+
+
+What is the best way to create nested reactive form?
+
+I have seen many ways to handle nested reactive form in Angular:
+
+Using ControlValueAccessor.
+
+Passing formGroup to child component by @Input.
+
+Using ContentChild and get child component's formGroup property.
+
+Using controlContainer.
+
+Which method is recommended?
+
+The first method requires some boilerplate.
+
+In the 2nd and 4th methods, the form group definition is in the parent component while the form view is in the child component. I have seen tutorial constructed the nested formGroup in child component static method then use that method in the parent component.
+
+The 3rd one is awkward with formArray.
+
+
+
+
+I usually use controlcontainer to pass formgroups, and controlvalueaccessor for single formcontrols.
+
+
+
+
+Lately for some form groups I have been using the control value accessor where the value is object.
+
+For example I have a shared address component which implements the control value accessor when I need it in a form I say
+
+address = new FormControl<Address>();
+In the address component itself I use a formgroup so that looks something like
+
+form = new FormGroup({
+    address1: new FormControl<string>(),
+    address2: new FormControl<strong>(),
+    Etc..
+})
+This pattern as worked pretty well for our forms
+
+
+
+formGroupName is probably the easiest to nest groups: https://angular.io/api/forms/FormGroupName
+Register a nested FormGroup.
+Then you can keep most of the logic in your parent component and just the barebones in child components if the form becomes big enough.
+
+
+
+I provide my FormGroup in the DI in the "rootform" component and access this parentForm in childcomponents to add more specific controls or groups.
+
+
+
+I have seen only the 1st and 2nd methods to handle nested reactive form in Angular. Would you mind posting a link for a blog or github about the 3rd and 4th methods?

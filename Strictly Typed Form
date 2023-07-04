@@ -16,3 +16,8 @@ constructor(private fb: NonNullableFormBuilder) {}
 
 
 A FormRecord is similar to a FormGroup but the controls must all be of the same type.
+
+
+
+
+https://jsonworld.com/blog/different-ways-to-get-form-data-in-angular-component
