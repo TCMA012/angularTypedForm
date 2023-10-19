@@ -1,0 +1,14 @@
+typing
+Typed forms are great, I was talking about the form values which are not strongly typed and require unnecessary amount of extra work
+
+Like
+
+form = formBuilder.group({ price: [''] })
+
+form.value.price => any
+
+now becomes
+
+form = new FormGroup<{ price: FormControl<Price> }>({ price: new FormControl(null) });
+
+form.value.price => Price

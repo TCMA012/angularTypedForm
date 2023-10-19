@@ -1,0 +1,13 @@
+Date of Birth field validation
+
+I have a date of birth field with 3 inputs month day and year I want to the validation error only to show up only after the year input is filled or the day is out of bound i.e greater than 31 and if the date filled not a valid date eg. Feb 30 2000. I know it will be easier with a date picker but just as a challenge is there a better way to validate 3 deferent input as a single field.
+
+You are going to use a ControlValueAccessor and nest the 3 inputs in one form control
+Look at the 'How to implement nested form groups (an address nested form)' section
+https://blog.angular-university.io/angular-custom-form-controls/
+
+
+
+You can search for "Cross Validation in Angular Reactive Form" or "Multiple fields validation in Angular Reactive Form". Some articles that you'll find will suggest adding a validation at the Form Group lever rather than the inputs. This way, you can access the 3 inputs, wait for them to be filled, and then launch your validation. I think this is a good solution to the "validation as single field" that you're looking for. And it's an official technique!
+
+After that, you can try to wrap your form in a ControlValueAccessor to create your date input that can have its own validation logic, and you can use and reuse as an input
